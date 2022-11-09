@@ -1,6 +1,8 @@
 #![allow(dead_code, unused_variables, unused_doc_comments)]
 use std::thread;
 
+////////////////////////////////////////////////////////
+/// Demonstrates: Closure
 pub fn iterator_demo() {
     /// Closure
     let v = (0..=10).collect::<Vec<_>>(); // [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
@@ -14,7 +16,7 @@ pub fn iterator_demo() {
 }
 
 ////////////////////////////////////////////////////////
-/// Demonstrates: Closure, Basic threading, Life times
+/// Demonstrates: Basic threading, Life times
 pub fn basic_thread() -> thread::Result<Vec<i32>> {
     /// Starting the vec 'v' with [0, 1]
     let mut v = vec![0, 1];
