@@ -5,6 +5,7 @@ use std::time;
 
 // Message from Go Community :)
 // Do not communicate by sharing memory; instead, share memory by communicating.
+// Crossbeam: https://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-channel/benchmarks
 
 pub fn msg_thread() -> thread::Result<()> {
     let mut handles: Vec<thread::JoinHandle<_>> = Vec::new();
