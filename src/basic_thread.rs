@@ -6,17 +6,18 @@ use std::thread;
 pub fn iterator_demo() {
     /// Closure
     let v = (0..=10).collect::<Vec<_>>(); // [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
-    let v1 = v
+    let iter_v1 = v
         .iter()
         .map(|n| n * n)
         .filter(|n| *n > 0)
-        .zip((100..=110).collect::<Vec<i32>>())
-        .collect::<Vec<_>>();
+        .zip((100..=110).collect::<Vec<i32>>());
+    let v1 = iter_v1.collect::<Vec<_>>();
     println!("Iterator result: {:?}", v1);
 }
 
 ////////////////////////////////////////////////////////
 /// Demonstrates: Basic threading, Life times
+/// Rust Thread: 1 OS thread : 1 rust thread
 pub fn basic_thread() -> thread::Result<Vec<i32>> {
     /// Starting the vec 'v' with [0, 1]
     let mut v = vec![0, 1];
@@ -42,6 +43,42 @@ pub fn basic_thread() -> thread::Result<Vec<i32>> {
 
     let result_vec = handle1.join().unwrap();
     Ok(result_vec)
+}
+
+/*
+pub fn basic_thread1() -> thread::Result<()> {
+    // let amp_str = "Hello World";
+    let v = vec![1, 2, 3, 4];
+
+    let handle1 = thread::spawn(|| {
+        println!("String: {:?}", v);
+    });
+    Ok(())
+}
+*/
+
+/*
+pub fn basic_thread2() -> thread::Result<()> {
+    /// Starting the vec 'v' with [0, 1]
+    let amp_str = "Hello World";
+
+    let handle1 = thread::spawn(|| {
+        let amp_str = amp_str;
+        println!("String: {:?}", amp_str);
+    });
+    Ok(())
+}
+*/
+
+pub fn basic_thread3() -> thread::Result<()> {
+    /// Starting the vec 'v' with [0, 1]
+    let amp_str = "Hello World".to_owned();
+
+    let handle1 = thread::spawn(|| {
+        let amp_str = amp_str;
+        println!("String: {:?}", amp_str);
+    });
+    Ok(())
 }
 
 ////////////////////////////////////////////////////////

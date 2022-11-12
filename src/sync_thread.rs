@@ -4,42 +4,35 @@ use std::thread;
 pub fn sync_thread() -> thread::Result<()> {
     let mut handles: Vec<thread::JoinHandle<_>> = Vec::new();
 
-    // Arc: `Arc<T>` provides shared ownership of a value of type `T`.
-    //    - wrap a value we're trying to share and
-    //    - act as a pointer to it.
-    // Arc keeps track of all of the copies of the pointer and
-    // as soon as the last pointer goes out of scope it can safely
-    // free the memory
+    // Arc enables to safely share a value between multiple threads(solves 'static reqt of thread::spawn)
+    // Mutex is a wrapper over another type, which allows safe mutability across threads
 
-    // Mutex wraps the data structure to be gaurded
-    //  1. Lock to get the MutexGuard
-    //  2. Mutate the data gaurded
-    //  3. Unlocking happends when scope end
-    let vec: Arc<Mutex<Vec<i32>>> = Arc::new(Mutex::new(vec![0, 1]));
+    let wrapped_arc_mutex: Arc<Mutex<Vec<i32>>> = Arc::new(Mutex::new(vec![0, 1]));
 
     // ******************* Thread 1 *******************
     // Arc clone: The data is common but ref count increases atomically)
-    let v1 = Arc::clone(&vec);
+    let wrapped_arc_mutex_clone1 = Arc::clone(&wrapped_arc_mutex);
     let handle1 = thread::spawn(move || {
-        let mut v: MutexGuard<Vec<i32>> = v1.lock().unwrap();
-        v.push(2);
-        v.push(4);
-        // println!("Sync Mutex thr1: {:?}", v);
+        // Create a local scope
+        {
+            // Deref for Arc: (*wrapped_arc_mutex_clone1).lock().unwrap()
+            let mut v: MutexGuard<Vec<i32>> = wrapped_arc_mutex_clone1.lock().unwrap();
+            (*v).push(2); // Deref for MutexGuard: (*v).push(2)
+            v.push(4);
+            // println!("Sync Mutex thr1: {:?}", v);
+        } // mutex unlocks at the end of this scope(Drop Trait)
+
+        // Do some work which need not be under critical section
     });
     handles.push(handle1);
 
     // ******************* Thread 2 *******************
-    let v2 = Arc::clone(&vec);
+    let wrapped_arc_mutex_clone2 = Arc::clone(&wrapped_arc_mutex);
     let handle2 = thread::spawn(move || {
-        // Create a local scope
-        {
-            let mut v = v2.lock().unwrap();
-            v.push(3);
-            v.push(5);
-            // println!("Sync Mutex thr2: {:?}", v);
-        } // mutex unlocks at the end of this scope
-
-        // Do some work which need not be under critical section
+        let mut v = wrapped_arc_mutex_clone2.lock().unwrap();
+        v.push(3);
+        v.push(5);
+        // println!("Sync Mutex thr2: {:?}", v);
     });
 
     // Join the threads
@@ -49,4 +42,3 @@ pub fn sync_thread() -> thread::Result<()> {
     }
     Ok(())
 }
-// std::time::UNIX_EPOCH.elapsed().unwrap().as_secs();

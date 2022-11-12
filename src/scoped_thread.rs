@@ -6,6 +6,7 @@ pub fn sync_thread() -> thread::Result<()> {
     let vec: Mutex<Vec<i32>> = Mutex::new(vec![0, 1]);
 
     /// The threads are joined before the scoped closure goes out of scope,
+    /// eliminating the concern of vec going out of scope earlier than desired
     thread::scope(|s| {
         s.spawn(|| {
             let mut v: MutexGuard<Vec<i32>> = vec.lock().unwrap();
