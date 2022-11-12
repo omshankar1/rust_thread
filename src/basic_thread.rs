@@ -2,28 +2,22 @@
 use std::thread;
 
 ////////////////////////////////////////////////////////
-/// Demonstrates: Closure
-pub fn iterator_demo() {
-    /// Closure
-    let v = (0..=10).collect::<Vec<_>>(); // [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
-    let iter_v1 = v
-        .iter()
-        .map(|n| n * n)
-        .filter(|n| *n > 0)
-        .zip((100..=110).collect::<Vec<i32>>());
-    let v1 = iter_v1.collect::<Vec<_>>();
-    println!("Iterator result: {:?}", v1);
+/// pub type Result<T> = crate::result::Result<T, Box<dyn Any + Send + 'static>>;
+pub enum Result<T, E> {
+    /// Contains the success value
+    Ok(T),
+    /// Contains the error value
+    Err(E),
 }
 
 ////////////////////////////////////////////////////////
 /// Demonstrates: Basic threading, Life times
-/// Rust Thread: 1 OS thread : 1 rust thread
 pub fn basic_thread() -> thread::Result<Vec<i32>> {
     /// Starting the vec 'v' with [0, 1]
     let mut v = vec![0, 1];
 
-    /// Capture not by reference but by ownership (move)
-    /// The vector 'v' is moved(ownership is transferred)
+    /// Not captured by reference but by moving ownership
+    /// The vector 'v' is moved
     let handle1 = thread::spawn(|| {
         v.push(1);
         v.push(2);
@@ -57,37 +51,18 @@ pub fn basic_thread1() -> thread::Result<()> {
 }
 */
 
-/*
-pub fn basic_thread2() -> thread::Result<()> {
-    /// Starting the vec 'v' with [0, 1]
-    let amp_str = "Hello World";
-
-    let handle1 = thread::spawn(|| {
-        let amp_str = amp_str;
-        println!("String: {:?}", amp_str);
-    });
-    Ok(())
-}
-*/
-
-pub fn basic_thread3() -> thread::Result<()> {
-    /// Starting the vec 'v' with [0, 1]
-    let amp_str = "Hello World".to_owned();
-
-    let handle1 = thread::spawn(|| {
-        let amp_str = amp_str;
-        println!("String: {:?}", amp_str);
-    });
-    Ok(())
-}
-
 ////////////////////////////////////////////////////////
-/// pub type Result<T> = crate::result::Result<T, Box<dyn Any + Send + 'static>>;
-pub enum Result<T, E> {
-    /// Contains the success value
-    Ok(T),
-    /// Contains the error value
-    Err(E),
+/// Demonstrates: Closure
+pub fn iterator_demo() {
+    /// Closure
+    let v = (0..=10).collect::<Vec<_>>(); // [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+    let iter_v1 = v
+        .iter()
+        .map(|n| n * n)
+        .filter(|n| *n > 0)
+        .zip((100..=110).collect::<Vec<i32>>());
+    let v1 = iter_v1.collect::<Vec<_>>();
+    println!("Iterator result: {:?}", v1);
 }
 
 pub fn fnptr_fnclosure() {
