@@ -78,7 +78,7 @@ pub fn fnptr() {
     let area = v.iter().map(|r| area_fnptr);
 }
 
-pub fn fnclosure() {
+pub fn fnclosures() {
     use std::f64::consts::PI;
     //////////////////////////////////////////////////////////
     /// Area using Closure with env capture 'PI'
@@ -105,23 +105,44 @@ pub fn fnclosure() {
     //////////////////////////////////////////////////////////
     /// FnOnce Trait
     let capture_height = 2; // Passed in as a capture
-    let capture_height = 2; // Passed in as a capture
     let area_closure3 = move || {
-        let capture_height = capture_height + 1;
-        let r = 9;
-        (r * r * capture_height) as f64 * PI
+        let r = 5;
+        let area = (r * r * capture_height) as f64 * PI;
     };
     // Closure to rust thread needs to be FnOnce
     thread::spawn(area_closure3);
+
+    //////////////////////////////////////////////////////////
+    // FnOnce Trait
+    let str = "Hello".to_string();
+    let closure_fn_once = || drop(str);
+    assert_fnonce_noargs(closure_fn_once);
 }
 
 pub fn assert_fn<F>(f: F)
 where
     F: Fn(i32) -> f64,
 {
+    println!("{}", f(1));
 }
-pub fn assert_fnmut<F>(f: F)
+
+pub fn assert_fnmut<F>(mut f: F)
 where
     F: FnMut(i32) -> f64,
 {
+    println!("{}", f(1));
+}
+
+pub fn assert_fnonce<F>(f: F)
+where
+    F: FnOnce(i32) -> f64,
+{
+    println!("{}", f(1));
+}
+
+pub fn assert_fnonce_noargs<F>(f: F)
+where
+    F: FnOnce(),
+{
+    f();
 }
