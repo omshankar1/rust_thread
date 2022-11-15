@@ -13,7 +13,7 @@ fn main() {
         Err(err) => println!("{:?}", err),
     }
 
-    // sync_thread::sync_thread().unwrap();
+    sync_thread::sync_thread().unwrap();
 
     // scoped_thread::sync_thread().unwrap();
     // msg_thread::msg_thread();

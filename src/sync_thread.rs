@@ -7,21 +7,23 @@ pub fn sync_thread() -> thread::Result<()> {
     // Arc enables to safely share a value between multiple threads(solves 'static reqt of thread::spawn)
     // Mutex is a wrapper over the data(other type) to be gaurded, which allows safe mutability across threads
 
-    let wrapped_arc_mutex: Arc<Mutex<Vec<i32>>> = Arc::new(Mutex::new(vec![0, 1]));
+    // vector to be mutated atomically across threads
+    let vector = vec![0, 1];
+    let wrapped_arc_mutex: Arc<Mutex<Vec<i32>>> = Arc::new(Mutex::new(vector));
 
     // ******************* Thread 1 *******************
     let wrapped_arc_mutex_clone1 = Arc::clone(&wrapped_arc_mutex);
     let handle1 = thread::spawn(move || {
         // Create a local scope
         {
-            // Deref for Arc: (*wrapped_arc_mutex_clone1).lock().unwrap()
+            // Deref for Arc to yield inner value: (*wrapped_arc_mutex_clone1).lock().unwrap()
             let mut v: MutexGuard<Vec<i32>> = wrapped_arc_mutex_clone1.lock().unwrap();
 
-            (*v).push(2); // Deref Trait for MutexGuard: (*v).push(2)
+            (*v).push(2); // Deref Trait for MutexGuard to yield inner value: (*v).push(2)
             v.push(4);
         } // mutex unlocks at the end of this scope(Drop Trait for MutexGuard )
 
-        // Do some work which need not be under critical section
+        // Do some non critical work which need not be under critical section
     });
     handles.push(handle1);
 

@@ -11,13 +11,18 @@ pub enum Result<T, E> {
 }
 
 ////////////////////////////////////////////////////////
-/// Demonstrates: Basic threading, Life times
+/// Basic threading
 pub fn basic_thread() -> thread::Result<Vec<i32>> {
     /// Starting the vec 'v' with [0, 1]
     let mut v = vec![0, 1];
 
     /// Not captured by reference but by moving ownership
     /// The vector 'v' is moved
+
+    /// pub fn spawn<F, T>(f: F) -> JoinHandle<T>
+    /// where
+    ///     F: FnOnce() -> T,  // All captures to be 'moved' inside
+    ///     F: Send + 'static,
     let handle1 = thread::spawn(|| {
         v.push(1);
         v.push(2);

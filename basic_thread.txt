@@ -1,0 +1,19 @@
+1. Lets spawn a thread to update a mutable vec v.
+   pub fn spawn<F, T>(f: F) -> JoinHandle<T>
+   where
+       F: FnOnce() -> T,
+       F: Send + 'static,
+       T: Send + 'static,
+   {
+   Since spawn demands the closure passed in to be FnOnce/'static
+   - all captures to be moved in
+
+
+2. Comment out line 33, compiler error because v has already moved into thread(handle1)
+
+3. Comment out line 35, again a similar error
+
+
+Fix: - Make 'v' safely be send across multiple threads. 
+          - Mutex: Making 'v' be able to be mutated across threads
+          - Arc: Create shared "v" without worrying about who might own the responsibility to free
