@@ -2,8 +2,6 @@
 mod basic_thread;
 mod closure;
 mod msg_thread;
-mod scoped_thread;
-mod sync_thread;
 
 fn main() {
     // basic_thread::iterator_demo();

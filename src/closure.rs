@@ -1,7 +1,19 @@
-#![allow(dead_code, unused_variables, unused_doc_comments)]
-use std::sync::Arc;
+#![allow(dead_code, unused_variables, unused_doc_comments, unused_imports)]
+use std::sync::{Arc, Mutex};
 use std::thread;
+
 ////////////////////////////////////////////////////////
+pub fn basic_thread1() {
+    let v = "Hello";
+    let v = vec![1, 2, 3];
+    // let vslice = &v[..];
+
+    let handle1 = thread::spawn(move || {
+        // println!("String: {:?}", vslice);
+    });
+    handle1.join().unwrap();
+}
+
 /// Demonstrates: Closure
 pub fn iterator_demo() {
     /// Closure

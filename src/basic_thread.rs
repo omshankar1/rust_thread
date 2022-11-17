@@ -12,6 +12,7 @@ pub fn basic_thread1() {
     /// where
     ///     F: FnOnce() -> T,  // All captures to be 'moved' inside
     ///     F: Send + 'static,
+
     let handle1 = thread::spawn(|| {
         // println! only needs a shared reference
         println!("Vector: {:?}", v);
@@ -141,8 +142,9 @@ pub fn basic_thread5() {
 pub fn sync_thread() -> thread::Result<()> {
     let mut handles: Vec<thread::JoinHandle<_>> = Vec::new();
 
-    // Arc enables to safely share a value between multiple threads(solves 'static reqt of thread::spawn)
-    // Mutex is a wrapper over the data(other type) to be gaurded, which allows safe mutability across threads
+    // Recap:
+    //    Arc enables to safely share a value between multiple threads(solves 'static reqt of thread::spawn)
+    //    Mutex is a wrapper over the data(other type) to be gaurded, which allows safe mutability across threads
 
     // vector to be mutated atomically across threads
     let vector = vec![0, 1];
