@@ -6,10 +6,10 @@ use std::thread;
 pub fn basic_thread1() {
     let v = "Hello";
     let v = vec![1, 2, 3];
-    // let vslice = &v[..];
+    let v = &v[..];
 
     let handle1 = thread::spawn(move || {
-        // println!("String: {:?}", vslice);
+        // println!("String: {:?}", v);
     });
     handle1.join().unwrap();
 }
