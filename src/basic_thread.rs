@@ -183,7 +183,7 @@ pub fn sync_thread() -> thread::Result<()> {
     Ok(())
 }
 
-pub fn scoped_thread() -> thread::Result<()> {
+pub fn scoped_thread() -> thread::Result<i32> {
     let vec: Mutex<Vec<i32>> = Mutex::new(vec![0, 1]);
 
     /// The threads are joined before the scoped closure goes out of scope,
@@ -209,8 +209,12 @@ pub fn scoped_thread() -> thread::Result<()> {
             v.push(9);
         });
     });
-    println!("Scoped Thread vector: {:?}", vec);
-    Ok(())
+    // Collecting the sum of the vec elements into res
+    let res: i32 = {
+        let vector = vec.lock().unwrap();
+        vector.iter().sum()
+    };
+    Ok(res)
 }
 
 ////////////////////////////////////////////////////////

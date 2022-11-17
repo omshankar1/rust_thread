@@ -15,8 +15,8 @@ fn main() {
 
     let result = basic_thread::scoped_thread();
     match result {
-        Ok(()) => println!("Handling Result"),
+        Ok(res) => println!("Handling Result: {res}"),
         Err(err) => println!("{:?}", err),
     }
-    msg_thread::msg_thread();
+    // msg_thread::msg_thread();
 }
