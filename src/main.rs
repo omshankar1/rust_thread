@@ -3,7 +3,7 @@ mod basic_thread;
 mod closure;
 
 fn main() {
-    // closure::closure();
+    // closure::closure_iterator();
     // basic_thread::basic_thread1();
     // basic_thread::basic_thread2();
     // basic_thread::basic_thread3();

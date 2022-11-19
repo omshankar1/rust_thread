@@ -16,7 +16,7 @@ pub fn basic_thread1() {
 
 /// Demonstrates: Closure
 
-pub fn closure() {
+pub fn closure_iterator() {
     /// Closure
     let v = (0..=10).collect::<Vec<_>>(); // [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
     let capture1 = 3;
