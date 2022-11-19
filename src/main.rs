@@ -10,13 +10,14 @@ fn main() {
     // basic_thread::basic_thread3();
     // basic_thread::basic_thread4();
     // basic_thread::basic_thread5();
+    // basic_thread::basic_thread6();
 
-    basic_thread::sync_thread().unwrap();
+    // basic_thread::sync_thread().unwrap();
 
     // let result = basic_thread::scoped_thread();
     // match result {
-    //     Ok(res) => println!("Handling Result: {res}"),
+    //     Ok(res) => println!("scoped_thread Result: {res}"),
     //     Err(err) => println!("{:?}", err),
     // }
-    // msg_thread::msg_thread();
+    basic_thread::msg_thread().unwrap();
 }
