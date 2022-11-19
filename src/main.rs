@@ -1,7 +1,6 @@
 #![allow(dead_code, unused_variables, unused_doc_comments)]
 mod basic_thread;
 mod closure;
-mod msg_thread;
 
 fn main() {
     // closure::closure();
