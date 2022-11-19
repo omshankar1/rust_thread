@@ -4,7 +4,7 @@ mod closure;
 mod msg_thread;
 
 fn main() {
-    // basic_thread::iterator_demo();
+    // closure::closure();
     // basic_thread::basic_thread1();
     // basic_thread::basic_thread2();
     // basic_thread::basic_thread3();
@@ -13,10 +13,10 @@ fn main() {
 
     basic_thread::sync_thread().unwrap();
 
-    let result = basic_thread::scoped_thread();
-    match result {
-        Ok(res) => println!("Handling Result: {res}"),
-        Err(err) => println!("{:?}", err),
-    }
+    // let result = basic_thread::scoped_thread();
+    // match result {
+    //     Ok(res) => println!("Handling Result: {res}"),
+    //     Err(err) => println!("{:?}", err),
+    // }
     // msg_thread::msg_thread();
 }
