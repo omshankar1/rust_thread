@@ -8,11 +8,12 @@ use std::thread;
 pub fn basic_thread1() {
     let v = vec![0, 1];
 
-    /// pub fn spawn<F, T>(f: F) -> JoinHandle<T>
-    /// where
+    /// pub fn spawn<F, T>(f: F) -> JoinHandle<T> where
     ///     F: FnOnce() -> T,  // All captures to be 'moved' inside
     ///     F: Send + 'static,
 
+    /// `move` converts any variables captured by reference or mutable reference
+    ///  to variables captured by value.
     let handle1 = thread::spawn(|| {
         // println! only needs a shared reference
         println!("Vector: {:?}", v);
