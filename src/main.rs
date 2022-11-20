@@ -6,7 +6,7 @@ fn main() {
     // closure::closure_iterator();
     // basic_thread::basic_thread1();
     // basic_thread::basic_thread2();
-    // basic_thread::basic_thread3();
+    basic_thread::basic_thread3();
     // basic_thread::basic_thread4();
     // basic_thread::basic_thread5();
     // basic_thread::basic_thread6();
@@ -18,5 +18,5 @@ fn main() {
     //     Ok(res) => println!("scoped_thread Result: {res}"),
     //     Err(err) => println!("{:?}", err),
     // }
-    basic_thread::msg_thread().unwrap();
+    // basic_thread::msg_thread().unwrap();
 }

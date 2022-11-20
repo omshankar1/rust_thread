@@ -12,7 +12,6 @@ use std::time;
 ///     pub fn spawn<F, T>(f: F) -> JoinHandle<T> where
 ///         F: FnOnce() -> T,  // All captures to be 'moved' inside
 ///         F: Send + 'static,
-
 /*
 pub fn basic_thread1() {
     let v = vec![0, 1];
@@ -20,17 +19,16 @@ pub fn basic_thread1() {
     /// `move` converts any variables captured by reference or mutable reference
     ///  to variables captured by value.
     let handle1 = thread::spawn(|| {
-        // println! only needs a shared reference
-        println!("Vector: {:?}", v);
+        println!("Vector: {:?}", v); // println! only needs a shared reference
     });
     handle1.join().unwrap();
 }
 */
-
-/*
 ////////////////////////////////////////////////////////
 /// Basic threading 2:
 ///     - Print a vector concurrently from couple of threads
+///     - need for a shared reference kind of smart pointer
+/*
 pub fn basic_thread2() {
     let v = vec![0, 1];
 
@@ -39,6 +37,7 @@ pub fn basic_thread2() {
     });
 
     let handle2 = thread::spawn(move || {
+        // no vector 'v' available to be moved in this closure
         println!("Vector: {:?}", v);
     });
 
@@ -60,45 +59,18 @@ pub fn basic_thread3() {
         println!("basic_thread3 Vector: {:?}", arc_clone1);
     });
 
+    let arc_clone2 = Arc::clone(&arc_v);
     let handle2 = thread::spawn(move || {
-        println!("basic_thread3 Vector: {:?}", arc_v);
+        println!("basic_thread3 Vector: {:?}", arc_clone2);
     });
 
     handle2.join().unwrap();
     handle1.join().unwrap();
 }
-
 ////////////////////////////////////////////////////////
 /// Basic threading 4: Mutating the vector concurrently
-pub fn basic_thread4() {
-    /// Starting the vec 'v' with [0, 1]
-    let mut v = vec![0, 1];
-
-    let handle1 = thread::spawn(move || {
-        v.push(2);
-        v.push(3);
-        println!("Vec: {:?}", v);
-        v
-    });
-
-    // v.push(8); // Borrow of moved value: v
-
-    // let handle2 = thread::spawn(move || {
-    //     // Closure may outlive v
-    //     v.push(4);
-    //     v.push(5);
-    //     println!("Vec: {:?}", v);
-    //     v
-    // });
-    // handle2.join();
-
-    handle1.join().unwrap();
-}
-
 /*
-////////////////////////////////////////////////////////
-/// Basic threading 5: Mutating the vector concurrently
-pub fn basic_thread5() {
+pub fn basic_thread4() {
     /// Starting the vec 'v' with [0, 1]
     let mut v = vec![0, 1];
     let arc = Arc::new(v);
@@ -120,8 +92,35 @@ pub fn basic_thread5() {
     // });
     // handle2.join().unwrap();
 }
-    */
+*/
+////////////////////////////////////////////////////////
+/// Basic threading 5: Mutating the vector concurrently
+/*
+pub fn basic_thread5() {
+    /// Starting the vec 'v' with [0, 1]
+    let mut v = vec![0, 1];
 
+    let handle1 = thread::spawn(move || {
+        v.push(2);
+        v.push(3);
+        println!("Vec: {:?}", v);
+        v
+    });
+
+    // v.push(8); // Borrow of moved value: v
+
+    // let handle2 = thread::spawn(move || {
+    //     // v has been already moved into thread1
+    //     v.push(4);
+    //     v.push(5);
+    //     println!("Vec: {:?}", v);
+    //     v
+    // });
+    // handle2.join().unwrap();
+
+    handle1.join().unwrap();
+}
+*/
 ////////////////////////////////////////////////////////
 /// Basic threading 6: Mutating the vector concurrently
 pub fn basic_thread6() {
