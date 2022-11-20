@@ -67,6 +67,7 @@ pub fn basic_thread3() {
     handle2.join().unwrap();
     handle1.join().unwrap();
 }
+
 ////////////////////////////////////////////////////////
 /// Basic threading 4: Mutating the vector concurrently
 /*
@@ -233,7 +234,6 @@ pub fn scoped_thread() -> std::result::Result<i32, String> {
 }
 
 ////////////////////////////////////////////////////////
-/// pub type Result<T> = crate::result::Result<T, Box<dyn Any + Send + 'static>>;
 pub enum Result<T, E> {
     /// Contains the success value
     Ok(T),
