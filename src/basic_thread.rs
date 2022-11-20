@@ -95,36 +95,8 @@ pub fn basic_thread4() {
 }
 */
 ////////////////////////////////////////////////////////
-/// Basic threading 5: Mutating the vector concurrently
-/*
+/// Basic threading 5: Understand Mutex better
 pub fn basic_thread5() {
-    /// Starting the vec 'v' with [0, 1]
-    let mut v = vec![0, 1];
-
-    let handle1 = thread::spawn(move || {
-        v.push(2);
-        v.push(3);
-        println!("Vec: {:?}", v);
-        v
-    });
-
-    // v.push(8); // Borrow of moved value: v
-
-    // let handle2 = thread::spawn(move || {
-    //     // v has been already moved into thread1
-    //     v.push(4);
-    //     v.push(5);
-    //     println!("Vec: {:?}", v);
-    //     v
-    // });
-    // handle2.join().unwrap();
-
-    handle1.join().unwrap();
-}
-*/
-////////////////////////////////////////////////////////
-/// Basic threading 6: Mutating the vector concurrently
-pub fn basic_thread6() {
     /// Starting the vec 'v' with [0, 1]
     let v = vec![0, 1];
     let mutex_v = Mutex::new(v);
@@ -149,7 +121,7 @@ pub fn basic_thread6() {
 }
 
 ////////////////////////////////////////////////////////
-/// Basic threading 5: Mutating the vector concurrently
+/// Complete example
 pub fn sync_thread() -> thread::Result<()> {
     let mut handles: Vec<thread::JoinHandle<_>> = Vec::new();
 
@@ -230,6 +202,7 @@ pub fn scoped_thread() -> std::result::Result<i32, String> {
         vector.iter().sum()
     };
     // Err("Dammit!".to_string())
+    // Err(8)
     Ok(res)
 }
 
