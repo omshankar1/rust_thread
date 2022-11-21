@@ -1,8 +1,10 @@
 #![allow(dead_code, unused_variables, unused_doc_comments)]
 mod basic_thread;
 mod closure;
+mod copysemantics;
 
 fn main() {
+    // copysemantics::copysemantics();
     // closure::closure_iterator();
     // basic_thread::basic_thread1();
     // basic_thread::basic_thread2();

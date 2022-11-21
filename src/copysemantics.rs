@@ -1,22 +1,27 @@
 #![allow(dead_code, unused_imports, unused_variables)]
 fn main() {
+    copysemantics();
+}
+
+pub fn copysemantics() {
     // POD types: COPY
     let x = 5;
     let y = x;
     println!("x = {}, y = {}", x, y);
 
-
-    // Simple extension to POD types
+    // Simple extension to POD types (Tuple type)
     type TripletInt = (i32, i32, i32);
-    let t: TripletInt = (3,3,3);
+    let t: TripletInt = (3, 3, 3);
     let s = t;
     println!("{:?}, {:?}", s, t);
 
     type TripletStrSlice<'a> = (i32, i32, &'a str);
-    let t: TripletStrSlice = (3,3, "Hello");
+    let t: TripletStrSlice = (3, 3, "Hello");
     let s = t;
     println!("{:?}, {:?}", s, t);
-    
+
+    // Compiler error: String is not allocated on
+    // Heap and copy exclusively for Stack-Only data
     type TripletStr = (i32, i32, String);
     // let t: TripletStr = (3,3, "Hello".to_string());
     // let s = t;
@@ -24,8 +29,8 @@ fn main() {
 
     #[derive(Debug, Copy, Clone)]
     struct StructTuple(i32, i32);
-    
-    let t = StructTuple(3,3);
+
+    let t = StructTuple(3, 3);
     println!("{:?}", t);
     let s = t;
     println!("{:?}, {:?}", s, t);
