@@ -18,19 +18,19 @@ pub fn basic_thread1() {
 
 pub fn closure_iterator() {
     /// Closure
-    let v = (0..=10).collect::<Vec<_>>(); // [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+    let v = (1..=10).collect::<Vec<_>>(); // [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
     let capture = "x Units".to_string();
     let iter_v1 = v
         .iter()
         .map(|n| n * n) //  [0, 1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
         .filter(|n| *n < 80) //  [16, 25, 36, 49, 64]
         .zip(100..=110) //  [(1, 100), (4, 101), (9, 102), (16, 103), ...
-        .map(|(x, y)| 3 * (x + y))
+        .map(|(x, y)| x + y)
         .map(|n| {
             let mut str = n.to_string();
             str.push_str(&capture);
             str
-        }); //  ["300x Units", "306x Units", "318x Units", ...
+        }); // ["101x Units", "105x Units", "111x Units", "119x Units", ...
     let v1 = iter_v1.collect::<Vec<_>>();
     println!("Iterator result: {:?}", v1);
     println!("value of units: {:?}", capture);
