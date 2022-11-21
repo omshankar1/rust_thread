@@ -9,7 +9,6 @@ fn main() {
     basic_thread::basic_thread3();
     // basic_thread::basic_thread4();
     // basic_thread::basic_thread5();
-    // basic_thread::basic_thread6();
 
     // basic_thread::sync_thread().unwrap();
 
