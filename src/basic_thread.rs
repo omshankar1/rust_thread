@@ -16,12 +16,14 @@ use std::time;
 pub fn basic_thread1() {
     let v = vec![0, 1];
 
-    /// `move` converts any variables captured by reference or mutable reference
-    ///  to variables captured by value.
     let handle1 = thread::spawn(|| {
         println!("Vector: {:?}", v); // println! only needs a shared reference
     });
     handle1.join().unwrap();
+
+    // Issue: v is borrowed(Fn) but spawn needs FnOnce
+    //       `move` converts any variables captured by reference
+    //        or mutable reference to variables captured by value.
 }
 */
 ////////////////////////////////////////////////////////
@@ -37,12 +39,14 @@ pub fn basic_thread2() {
     });
 
     let handle2 = thread::spawn(move || {
-        // no vector 'v' available to be moved in this closure
         println!("Vector: {:?}", v);
     });
 
     // handle2.join().unwrap();
     handle1.join().unwrap();
+
+    // Issue: no vector 'v' available to be moved in this closure
+    //        Need a way to share v across the 2 threads
 }
 */
 ////////////////////////////////////////////////////////
@@ -76,7 +80,6 @@ pub fn basic_thread4() {
     let mut v = vec![0, 1];
     let arc = Arc::new(v);
 
-    // fn clone(&self) -> Arc<T>, doesn't take a mutable self
     let arc_clone1 = Arc::clone(&arc);
     let handle1 = thread::spawn(move || {
         arc_clone1.push(1);
@@ -85,13 +88,8 @@ pub fn basic_thread4() {
     });
     handle1.join().unwrap();
 
-    // let arc_clone2 = Arc::clone(&arc);
-    // let handle2 = thread::spawn(move || {
-    //     arc_clone2.push(3);
-    //     arc_clone2.push(4);
-    //     println!("Vector: {:?}", arc_clone2);
-    // });
-    // handle2.join().unwrap();
+    // Issue: Can't wrap a &mut T by an Arc (fn clone(&self) -> Arc<T>)
+    // Can only pass shared borrow(immutable data) across using Arc
 }
 */
 ////////////////////////////////////////////////////////
@@ -102,8 +100,6 @@ pub fn basic_thread5() {
     let mutex_v = Mutex::new(v);
 
     let handle1 = thread::spawn(move || {
-        // pub fn lock(&self) -> LockResult<MutexGuard<'_, T>>
-        // lock doesn't need a mutable self - Interior Mutability
         let mut v = mutex_v.lock().unwrap();
         v.push(1);
         v.push(2);
@@ -118,6 +114,11 @@ pub fn basic_thread5() {
     //     println!("Vector: {:?}", v);
     // });
     // handle2.join().unwrap();
+
+    // Issue: no mutex_v left for thread2.
+    //     Interior Mutability: lock doesn't need a mutable &mut self,
+    //     tricks compiler to think we're sharing only immutable data
+    //     pub fn lock(&self) -> LockResult<MutexGuard<'_, T>>
 }
 
 ////////////////////////////////////////////////////////
