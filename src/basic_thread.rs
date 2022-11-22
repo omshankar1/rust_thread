@@ -8,7 +8,6 @@ use std::time;
 ////////////////////////////////////////////////////////
 /// Basic threading 1:
 ///     - Print a vector in a thread
-///     - 'move' to force ownership movement into closure F
 ///     pub fn spawn<F, T>(f: F) -> JoinHandle<T> where
 ///         F: FnOnce() -> T,  // All captures to be 'moved' inside
 ///         F: Send + 'static,
