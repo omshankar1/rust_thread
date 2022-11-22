@@ -11,6 +11,7 @@ use std::time;
 ///     pub fn spawn<F, T>(f: F) -> JoinHandle<T> where
 ///         F: FnOnce() -> T,  // All captures to be 'moved' inside
 ///         F: Send + 'static,
+///
 /*
 pub fn basic_thread1() {
     let v = vec![0, 1];
@@ -29,6 +30,7 @@ pub fn basic_thread1() {
 /// Basic threading 2:
 ///     - Print a vector concurrently from couple of threads
 ///     - need for a shared reference kind of smart pointer
+///
 /*
 pub fn basic_thread2() {
     let v = vec![0, 1];
@@ -71,8 +73,9 @@ pub fn basic_thread3() {
     handle1.join().unwrap();
 }
 
-////////////////////////////////////////////////////////
-/// Basic threading 4: Mutating the vector concurrently
+/////////////////////////////////////////////////////////////
+/// Basic threading 4 'Arc': Mutating the vector concurrently
+///
 /*
 pub fn basic_thread4() {
     /// Starting the vec 'v' with [0, 1]
@@ -91,8 +94,9 @@ pub fn basic_thread4() {
     // Can only pass shared borrow(immutable data) across using Arc
 }
 */
-////////////////////////////////////////////////////////
-/// Basic threading 5: Understand Mutex better
+/////////////////////////////////////////////////////////////
+/// Basic threading 5: Mutate vector v by wrapping inside Mutex
+///
 pub fn basic_thread5() {
     /// Starting the vec 'v' with [0, 1]
     let v = vec![0, 1];
@@ -115,9 +119,12 @@ pub fn basic_thread5() {
     // handle2.join().unwrap();
 
     // Issue: no mutex_v left for thread2.
-    //     Interior Mutability: lock doesn't need a mutable &mut self,
-    //     tricks compiler to think we're sharing only immutable data
-    //     pub fn lock(&self) -> LockResult<MutexGuard<'_, T>>
+
+    // Note:
+    //   Interior Mutability:
+    //      Lock doesn't need a mutable &mut self, tricks compiler to
+    //      think we're sharing only immutable data
+    //      pub fn lock(&self) -> LockResult<MutexGuard<'_, T>>
 }
 
 ////////////////////////////////////////////////////////
