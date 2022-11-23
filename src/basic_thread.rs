@@ -14,8 +14,10 @@ use std::time;
 ///
 /*
 pub fn basic_thread1() {
+    // Initialize v to [0, 1]
     let v = vec![0, 1];
 
+    // Spawn a thread
     let handle1 = thread::spawn(|| {
         println!("Vector: {:?}", v); // println! only needs a shared reference
     });
@@ -28,11 +30,12 @@ pub fn basic_thread1() {
 */
 ////////////////////////////////////////////////////////
 /// Basic threading 2:
+///   Spawn two threads
 ///     - Print a vector concurrently from couple of threads
-///     - need for a shared reference kind of smart pointer
 ///
 /*
 pub fn basic_thread2() {
+    // Initialize v to [0, 1]
     let v = vec![0, 1];
 
     let handle1 = thread::spawn(move || {
@@ -56,14 +59,19 @@ pub fn basic_thread2() {
 ///     - Print a vector concurrently from couple of threads
 
 pub fn basic_thread3() {
+    // Initialize v to [0, 1]
     let v = vec![0, 1];
+
+    // Initialize arc_v by wrapping vector 'v'
     let arc_v = Arc::new(v);
 
+    // Clone arc_v and move it into thread1
     let arc_clone1 = Arc::clone(&arc_v);
     let handle1 = thread::spawn(move || {
         println!("basic_thread3 Vector: {:?}", arc_clone1);
     });
 
+    // Clone arc_v and move it into thread2
     let arc_clone2 = Arc::clone(&arc_v);
     let handle2 = thread::spawn(move || {
         println!("basic_thread3 Vector: {:?}", arc_clone2);
@@ -80,9 +88,11 @@ pub fn basic_thread3() {
 pub fn basic_thread4() {
     /// Starting the vec 'v' with [0, 1]
     let mut v = vec![0, 1];
+    // Initialize arc_v by wrapping vector 'v'
     let arc = Arc::new(v);
 
     let arc_clone1 = Arc::clone(&arc);
+    // Clone arc_clone1 and move it into thread1
     let handle1 = thread::spawn(move || {
         arc_clone1.push(1);
         arc_clone1.push(2);
@@ -100,9 +110,11 @@ pub fn basic_thread4() {
 pub fn basic_thread5() {
     /// Starting the vec 'v' with [0, 1]
     let v = vec![0, 1];
+    // Initialize mutex_v by wrapping vector 'v'
     let mutex_v = Mutex::new(v);
 
     let handle1 = thread::spawn(move || {
+        // lock mutex_v to get exclusive access to 'v'
         let mut v = mutex_v.lock().unwrap();
         v.push(1);
         v.push(2);
